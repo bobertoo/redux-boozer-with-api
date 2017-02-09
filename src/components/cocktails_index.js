@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-
+import { fetchCocktails } from '../actions'
 import { updateCocktail } from '../actions'
 
 class CocktailsIndex extends React.Component {
@@ -11,9 +11,13 @@ class CocktailsIndex extends React.Component {
     this.renderCocktails = this.renderCocktails.bind(this)
   }
 
+  componentDidMount(){
+    this.props.fetchCocktails()
+  }
+
   renderCocktails(cocktail) {
     return (<li key={cocktail.id}>
-      <p onClick={this.handleClick.bind(this, cocktail.id)}>
+      <p style={{cursor:'default'}} onClick={this.handleClick.bind(this, cocktail.id)}>
       {cocktail.name}
       </p>
     </li>)
@@ -51,6 +55,10 @@ class CocktailsIndex extends React.Component {
     return {
       updateCocktail: function( cocktailID ){
         let action = updateCocktail( cocktailID )
+        dispatch( action )
+      },
+      fetchCocktails: function(){
+        let action = fetchCocktails()
         dispatch( action )
       }
     }
