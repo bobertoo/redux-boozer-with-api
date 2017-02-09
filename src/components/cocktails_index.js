@@ -1,34 +1,60 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-function CocktailsIndex (props) {
-  const renderCocktails = (cocktail) => {
+import { updateCocktail } from '../actions'
+
+class CocktailsIndex extends React.Component {
+
+  constructor(props){
+    super(props)
+
+    this.renderCocktails = this.renderCocktails.bind(this)
+  }
+
+  renderCocktails(cocktail) {
     return (<li key={cocktail.id}>
-      <Link to={`/cocktails/${cocktail.id}`}>
-        {cocktail.name}
-      </Link>
+      <p onClick={this.handleClick.bind(this, cocktail.id)}>
+      {cocktail.name}
+      </p>
     </li>)
   }
 
-  return (
-  <div>
-    <div className='col-md-4'>
-      <ul>
-        {props.cocktails.map(renderCocktails)}
-      </ul>
-    </div>
-    <div className='col-md-8'>
-      {props.children}
-    </div>
-  </div>
-)
-};
+    handleClick(cocktailID){
+      console.log(cocktailID)
+      this.props.updateCocktail( cocktailID )
+    }
 
-function mapStateToProps(state){
-  return {
-    cocktails: state.cocktails
+    render(){
+      return (
+
+        <div>
+          <div className='col-md-4'>
+            <ul>
+              {this.props.cocktails.map(this.renderCocktails)}
+            </ul>
+          </div>
+          <div className='col-md-8'>
+            {this.props.children}
+          </div>
+        </div>
+      )
+    }
+  };
+
+  function mapStateToProps(state){
+    return {
+      cocktails: state.cocktails
+    }
   }
-}
 
-const componentCreator = connect(mapStateToProps)
-export default componentCreator(CocktailsIndex);
+  function mapDispatchToProps(dispatch){
+    return {
+      updateCocktail: function( cocktailID ){
+        let action = updateCocktail( cocktailID )
+        dispatch( action )
+      }
+    }
+  }
+
+  const componentCreator = connect(mapStateToProps, mapDispatchToProps)
+  export default componentCreator(CocktailsIndex);

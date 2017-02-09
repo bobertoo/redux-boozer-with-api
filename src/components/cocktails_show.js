@@ -5,7 +5,7 @@ function CocktailsShow (props) {
   const cocktail = props.cocktail;
 
   if (!cocktail) {
-    return <div>'Loading...'</div>;
+    return <div>Loading</div>
   }
 
   return (
